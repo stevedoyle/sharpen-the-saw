@@ -2,5 +2,6 @@
 
 members = [
     "rust/dcp023",
+    "rust/dcp096",
     "rust/dcp101",
 ]
