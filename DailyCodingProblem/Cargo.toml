@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+    "rust/dcp023",
+    "rust/dcp101",
+]
