@@ -15,6 +15,8 @@ func findSummers(k int, list []int) (result []int) {
 			sum += list[j]
 			if sum == k {
 				return list[i : j+1]
+			} else if sum > k {
+				break
 			}
 		}
 	}
