@@ -1,7 +1,8 @@
 [workspace]
+resolver = "2"
 
 members = [
     "rust/dcp023",
     "rust/dcp096",
-    "rust/dcp101",
+    "rust/dcp101", "rust/dcp212",
 ]
