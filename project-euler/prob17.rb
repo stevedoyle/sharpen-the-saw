@@ -6,7 +6,7 @@ def num_to_text(num)
 
   text = ""
   and_required = false
-  
+
   while num > 0
     if num >= 1000
       text += "one thousand "
@@ -31,7 +31,7 @@ def num_to_text(num)
       num = 0
     end
   end
-  
+
   text
 end
 

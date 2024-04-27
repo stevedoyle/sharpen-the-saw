@@ -4,4 +4,3 @@ def fact(n)
 end
 
 puts fact(40) / (fact(20) * fact(20))
-

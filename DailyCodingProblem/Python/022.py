@@ -18,6 +18,7 @@ the string "bedbathandbeyond", return either ['bed', 'bath', 'and',
 import re
 import unittest
 
+
 def reconstruct(dictionary, input):
     """
     Approach: Use the dictionary contents to direct the matching.
@@ -26,36 +27,37 @@ def reconstruct(dictionary, input):
     string. Reconstruction is achieved if the entire input string is
     consumed and forms a set of matches.
     """
-    pattern = '(' + '|'.join(dictionary) + ')+?'
+    pattern = "(" + "|".join(dictionary) + ")+?"
     m = re.findall(pattern, input)
     if not m:
         return []
-    if len(''.join(m)) != len(input):
+    if len("".join(m)) != len(input):
         return []
     return m
 
+
 class Test022Reconstruction(unittest.TestCase):
     def testReconstruction1(self):
-        dictionary = ['quick', 'brown', 'the', 'fox']
-        input = 'thequickbrownfox'
-        want = ['the', 'quick', 'brown', 'fox']
+        dictionary = ["quick", "brown", "the", "fox"]
+        input = "thequickbrownfox"
+        want = ["the", "quick", "brown", "fox"]
         self.assertEqual(want, reconstruct(dictionary, input))
 
     def testReconstruction2(self):
-        dictionary = ['bed', 'bath', 'bedbath', 'and', 'beyond']
-        input = 'bedbathandbeyond'
-        mandatory = ['and', 'beyond']
-        optionals = [['bed', 'bath'], ['bedbath']]
+        dictionary = ["bed", "bath", "bedbath", "and", "beyond"]
+        input = "bedbathandbeyond"
+        mandatory = ["and", "beyond"]
+        optionals = [["bed", "bath"], ["bedbath"]]
         output = reconstruct(dictionary, input)
         self.assertEqual(mandatory, output[-2:])
-        self.assertTrue(optionals[0] == output[:-2] or
-                        optionals[1] == output[:-2])
+        self.assertTrue(optionals[0] == output[:-2] or optionals[1] == output[:-2])
 
     def testNoValidReconstruction(self):
-        dictionary = ['quick', 'brown', 'the', 'fox']
-        input = 'thequickbrownsquirrel'
+        dictionary = ["quick", "brown", "the", "fox"]
+        input = "thequickbrownsquirrel"
         want = []
         self.assertEqual(want, reconstruct(dictionary, input))
+
 
 if __name__ == "__main__":
     unittest.main()

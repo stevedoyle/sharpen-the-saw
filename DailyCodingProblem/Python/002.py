@@ -20,6 +20,8 @@ import unittest
 Time Complexity: O(N)
 Space Complexity: O(N)
 """
+
+
 def product_with_division(data):
     # Calculate product of all of the members.
     prod = 1
@@ -30,19 +32,23 @@ def product_with_division(data):
         result.append(prod / val)
     return result
 
+
 """
 Time Complexity: O(N^2)
 Space Complexity: O(N)
 """
+
+
 def product(data):
     # Calculate product of all of the members.
     result = [1 for _ in range(len(data))]
     for i, val in enumerate(data):
         for j in range(i):
             result[i] *= data[j]
-        for j in range(i+1, len(data)):
+        for j in range(i + 1, len(data)):
             result[i] *= data[j]
     return result
+
 
 class TestProblem002(unittest.TestCase):
     def testCase1(self):
@@ -62,6 +68,7 @@ class TestProblem002(unittest.TestCase):
         expected = []
         self.assertEqual(expected, product_with_division(input))
         self.assertEqual(expected, product(input))
+
 
 if __name__ == "__main__":
     unittest.main()

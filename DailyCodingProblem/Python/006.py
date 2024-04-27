@@ -12,10 +12,12 @@ assume you have access to get_pointer and dereference_pointer functions
 that converts between nodes and memory addresses.
 """
 
+
 class Node:
     def __init__(self, val):
         self.val = val
         self.both = None
+
 
 class XorList:
     def __init__(self):
@@ -27,7 +29,9 @@ class XorList:
     def get(self, index):
         pass
 
+
 import unittest
+
 
 class TestXorList(unittest.TestCase):
     def testXorList(self):

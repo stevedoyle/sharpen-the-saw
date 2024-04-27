@@ -23,8 +23,10 @@ Naive approach.
 Time complexity: O(n^2)
 Space complexity: O(1)
 """
+
+
 def find_first_missing_int_naive(data) -> int:
-    for i in range(1, len(data)+1):
+    for i in range(1, len(data) + 1):
         found = False
         for val in data:
             if i == val:
@@ -32,21 +34,25 @@ def find_first_missing_int_naive(data) -> int:
                 break
         if not found:
             return i
-    return len(data)+1
+    return len(data) + 1
+
 
 """
 Build a tracker to track the positive integers
 Time complexity: O(n) ... assuming set operations are O(1)
 Space complexity: O(n)
 """
+
+
 def find_first_missing_int_tracker(data) -> int:
     tracker = set(data)
 
     # Find the missing value
-    for i in range(1, len(data)+1):
+    for i in range(1, len(data) + 1):
         if i not in tracker:
             return i
-    return len(data)+1
+    return len(data) + 1
+
 
 """
 Place the positive integers in the array at the index given by their
@@ -54,25 +60,29 @@ value, i.e. data[idx] = idx
 Time complexity: O(n)
 Space complexity: O(1)
 """
+
+
 def find_first_missing_int_index(data) -> int:
     n = len(data)
 
-    for i in  range(len(data)):
-        want = i+1
+    for i in range(len(data)):
+        want = i + 1
         while data[i] > 0:
-            if data[i] == want: break
+            if data[i] == want:
+                break
             if data[i] <= 0 or data[i] > n:
                 data[i] = -1
                 break
             j = data[i]
-            data[j-1], data[i] = data[i], data[j-1]
+            data[j - 1], data[i] = data[i], data[j - 1]
 
     # Find the missing value
     for i in range(1, len(data)):
-        if data[i-1] != i:
+        if data[i - 1] != i:
             return i
 
-    return len(data)+1
+    return len(data) + 1
+
 
 class TestFindFirstMissingInt(unittest.TestCase):
     def testEarlyGap(self):
@@ -95,6 +105,7 @@ class TestFindFirstMissingInt(unittest.TestCase):
         self.assertEqual(want, find_first_missing_int_naive(input))
         self.assertEqual(want, find_first_missing_int_tracker(input))
         self.assertEqual(want, find_first_missing_int_index(input))
+
 
 if __name__ == "__main__":
     unittest.main()

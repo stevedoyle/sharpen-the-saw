@@ -3,7 +3,7 @@ attempts = File.new("keylog.txt").each_line.to_a.select { |x| x.chomp }
 passcode = Hash.new { |h,k| h[k] = [ [], [] ] }
 attempts.each do |attempt|
   digits = attempt.chars.to_a
-  
+
   passcode[digits[0]][1] << digits[1]
   passcode[digits[0]][1] << digits[2]
 

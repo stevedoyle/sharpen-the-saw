@@ -70,7 +70,7 @@ class Hand
       end
     end
 
-    return my_rank > other_rank    
+    return my_rank > other_rank
   end
 
   private
@@ -90,11 +90,11 @@ class Hand
     }
     @type = classifiers.find { |name, pred| pred.call }[0]
   end
-  
+
   def royal_flush?
     straight_flush? and @cards.min.value == 10
   end
-  
+
   def straight_flush?
     straight? and flush?
   end
@@ -173,12 +173,12 @@ else
   describe Hand do
     it 'should recognise a royal flush' do
       h = Hand.new(['JH', 'QH', 'KH', 'AH', 'TH'])
-      h.type.should == 'royal_flush'      
+      h.type.should == 'royal_flush'
     end
 
     it 'should recognise a straight flush' do
       h = Hand.new(['2S', '3S', '4S', '5S', '6S'])
-      h.type.should == 'straight_flush'      
+      h.type.should == 'straight_flush'
       h.rank_value.should == [6]
     end
 
@@ -217,7 +217,7 @@ else
       h.type.should == 'two_pairs'
       h.rank_value.should == [5, 3]
     end
-    
+
     it 'should recognise one pair' do
       h = Hand.new(['2H', '2S', '3H', '4H', '9H'])
       h.type.should == 'one_pair'
@@ -291,13 +291,13 @@ else
     it 'should say the winner is player 1 in test hand 2' do
       h1 = Hand.new('5D 8C 9S JS AC'.split)
       h2 = Hand.new('2C 5C 7D 8S QH'.split)
-      h1.should be_better_than(h2)      
+      h1.should be_better_than(h2)
     end
 
     it 'should say the winner is player 2 in test hand 3' do
       h1 = Hand.new('2D 9C AS AH AC'.split)
       h2 = Hand.new('3D 6D 7D TD QD'.split)
-      h2.should be_better_than(h1)      
+      h2.should be_better_than(h1)
     end
 
     it 'should say the winner is player 1 in test hand 4' do
@@ -309,7 +309,7 @@ else
     it 'should say the winner is player 1 in test hand 5' do
       h1 = Hand.new('2H 2D 4C 4D 4S'.split)
       h2 = Hand.new('3C 3D 3S 9S 9D'.split)
-      h1.should be_better_than(h2)      
+      h1.should be_better_than(h2)
     end
 
   end

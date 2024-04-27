@@ -20,13 +20,12 @@
 (define (square x) (* x x))
 
 ;; testing
-(fast-expt 2 0) 
-(fast-expt 2 1) 
-(fast-expt 2 2) 
-(fast-expt 2 3) 
-(fast-expt 2 4) 
-(fast-expt 2 5) 
-(fast-expt 2 8) 
-(fast-expt 2 16) 
-(fast-expt 2 20) 
-
+(fast-expt 2 0)
+(fast-expt 2 1)
+(fast-expt 2 2)
+(fast-expt 2 3)
+(fast-expt 2 4)
+(fast-expt 2 5)
+(fast-expt 2 8)
+(fast-expt 2 16)
+(fast-expt 2 20)

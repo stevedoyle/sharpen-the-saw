@@ -8,7 +8,7 @@ end
 names = []
 
 File.new("names.txt", "r").each_line do |line|
-  names << line.gsub('"', '').split(",") 
+  names << line.gsub('"', '').split(",")
 end
 
 names.flatten!

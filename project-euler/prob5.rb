@@ -4,7 +4,7 @@ def evenly_divisible(num, factors)
 end
 
 num = 2520
-while true  
+while true
   # If a number is evenly divisible by (11..20) it will also be evenly
   # divisible by (1..10)
   break if evenly_divisible(num, (11..20))

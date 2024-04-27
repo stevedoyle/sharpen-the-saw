@@ -8,6 +8,7 @@ For example, given [(30, 75), (0, 50), (60, 150)], you should return 2.
 
 import unittest
 
+
 def rooms_needed(intervals):
     rooms = 0
     max_rooms = 0
@@ -31,6 +32,7 @@ def rooms_needed(intervals):
         max_rooms = max(max_rooms, rooms)
     return max_rooms
 
+
 class Test021RoomBooking(unittest.TestCase):
     def testOverlappingIntervals(self):
         input = [(30, 75), (0, 50), (60, 150)]
@@ -50,6 +52,7 @@ class Test021RoomBooking(unittest.TestCase):
         input = [(0, 40), (0, 40)]
         want = 2
         self.assertEqual(want, rooms_needed(input))
+
 
 if __name__ == "__main__":
     unittest.main()

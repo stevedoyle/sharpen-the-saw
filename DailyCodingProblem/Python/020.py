@@ -16,17 +16,19 @@ and constant space.
 
 import unittest
 
+
 def list_intersection(a, b):
     minlen = min(len(a), len(b))
     if len(a) < len(b):
-        b = b[len(b) - minlen:]
+        b = b[len(b) - minlen :]
     else:
-        a = a[len(a) - minlen:]
+        a = a[len(a) - minlen :]
 
     for i in range(minlen):
         if a[i] == b[i]:
             return a[i]
     return None
+
 
 class Test020ListIntersect(unittest.TestCase):
     def testIntersectingLists(self):
@@ -46,6 +48,7 @@ class Test020ListIntersect(unittest.TestCase):
         b = [99, 98, 97, 96, 8, 10]
         want = 8
         self.assertEqual(want, list_intersection(a, b))
+
 
 if __name__ == "__main__":
     unittest.main()

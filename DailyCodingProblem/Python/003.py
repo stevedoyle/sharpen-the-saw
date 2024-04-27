@@ -29,27 +29,31 @@ assert deserialize(serialize(node)).left.left.val == 'left.left'
 
 import unittest
 
+
 class Node:
     def __init__(self, val, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
 
+
 def serialize(node):
     # Using a ',' as a node seperator in the serialized string
     # An empty string (i.e. ',,') denotes an empty node in the tree.
     # Following a convention of left branch traversal first.
-    str = ','
+    str = ","
     if node:
-        str = node.val + ','
+        str = node.val + ","
         str += serialize(node.left)
         str += serialize(node.right)
     return str
 
+
 def deserialize(str):
-    elems = str.split(',')
+    elems = str.split(",")
     eliter = iter(elems)
     return deserializePreorder(eliter)
+
 
 def deserializePreorder(eliter):
     try:
@@ -66,14 +70,15 @@ def deserializePreorder(eliter):
 
 class TestSerialize(unittest.TestCase):
     def testSerialize(self):
-        node = Node('root', Node('left', Node('left.left')), Node('right'))
-        self.assertEqual(serialize(node), 'root,left,left.left,,,,right,,,')
-        self.assertEqual(deserialize(serialize(node)).left.left.val, 'left.left')
+        node = Node("root", Node("left", Node("left.left")), Node("right"))
+        self.assertEqual(serialize(node), "root,left,left.left,,,,right,,,")
+        self.assertEqual(deserialize(serialize(node)).left.left.val, "left.left")
 
     def testSerializeNullTree(self):
         node = None
-        self.assertEqual(serialize(node), ',')
+        self.assertEqual(serialize(node), ",")
         self.assertEqual(deserialize(serialize(node)), None)
+
 
 if __name__ == "__main__":
     unittest.main()

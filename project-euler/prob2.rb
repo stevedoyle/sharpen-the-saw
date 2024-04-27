@@ -1,6 +1,6 @@
 class Fibonacci
 
-  def sequence(nterms)    
+  def sequence(nterms)
     terms = []
     x1, x2 = 0, 1
     1.upto(nterms) do
@@ -10,11 +10,11 @@ class Fibonacci
     end
     terms
   end
-  
+
   def [](n)
     sequence(n+1)[-1]
   end
-  
+
 end
 
 if __FILE__ == $0

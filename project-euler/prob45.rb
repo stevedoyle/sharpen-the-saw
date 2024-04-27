@@ -24,11 +24,10 @@ while true
   t = triangle(n)
   p.add(pentagonal(n))
   h.add(hexagonal(n))
-  
+
   if p.include?(t) and h.include?(t) and n > 285
     puts "t = #{t}"
     break
   end
   n += 1
 end
-

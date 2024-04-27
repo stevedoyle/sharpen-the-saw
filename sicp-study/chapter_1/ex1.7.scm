@@ -18,4 +18,4 @@
 (define (sqrti x)
   (sqrt-iter 1.0 0.0 x))
 
-; http://www.kendyck.com/archives/2005/03/20/solution-to-sicp-exercise-17/ 
+; http://www.kendyck.com/archives/2005/03/20/solution-to-sicp-exercise-17/

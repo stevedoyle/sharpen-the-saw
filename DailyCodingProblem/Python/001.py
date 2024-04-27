@@ -18,17 +18,22 @@ Bonus: Can you do this in one pass?
 Time Complexity:  O(n^2)
 Space Complexity: O(1)
 """
+
+
 def test_sum_original(lst, k):
     for count, value in enumerate(lst):
         b = k - value
-        if b in lst[count+1:]:
+        if b in lst[count + 1 :]:
             return True
     return False
+
 
 """
 Time Complexity:  O(N)
 Space Complexity: O(N)
 """
+
+
 def test_sum(lst, k):
     prev = set()
     for value in lst:
@@ -37,6 +42,7 @@ def test_sum(lst, k):
             return True
         prev.add(value)
     return False
+
 
 class TestProblem001(unittest.TestCase):
     def testTrueCase(self):
@@ -47,6 +53,7 @@ class TestProblem001(unittest.TestCase):
 
     def testEmptyList(self):
         self.assertEqual(False, test_sum([], 1))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -25,6 +25,7 @@ second row.
 from collections import deque
 import unittest
 
+
 def valid_board_coordinate(board, pos):
     row, col = pos
     if row < 0 or row >= len(board):
@@ -33,17 +34,15 @@ def valid_board_coordinate(board, pos):
         return False
     return not board[row][col]
 
+
 def get_valid_neighbours(board, pos):
     row, col = pos
     neighbours = []
-    for candidate in [
-        (row, col-1),
-        (row-1, col),
-        (row+1, col),
-        (row, col+1)]:
+    for candidate in [(row, col - 1), (row - 1, col), (row + 1, col), (row, col + 1)]:
         if valid_board_coordinate(board, candidate):
             neighbours.append(candidate)
     return neighbours
+
 
 def count_steps(board, start, end):
     """
@@ -73,17 +72,20 @@ def count_steps(board, start, end):
         return -1
     return min(solutions)
 
+
 class Test023CountSteps(unittest.TestCase):
     def testGivenProblem(self):
         board = [
             [False, False, False, False],
             [True, True, False, True],
             [False, False, False, False],
-            [False, False, False, False]]
+            [False, False, False, False],
+        ]
         start = (3, 0)
         end = (0, 0)
         want = 7
         self.assertEqual(want, count_steps(board, start, end))
+
 
 if __name__ == "__main__":
     unittest.main()
