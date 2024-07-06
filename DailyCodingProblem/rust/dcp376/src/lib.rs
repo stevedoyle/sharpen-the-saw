@@ -23,16 +23,20 @@
 //
 // Our position: (0, 2) Coins: [(0, 4), (1, 0), (2, 0), (3, 2)]
 
-// Add a struct to represent a point in 2D space
+// A point in 2D space
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Point {
     x: i32,
     y: i32,
 }
 
-pub fn closest_coin(our_pos: Point, coins: &[Point]) -> Point {
+pub fn closest_coin(our_pos: Point, coins: &[Point]) -> Option<Point> {
+    if coins.is_empty() {
+        return None;
+    }
+
     let mut closest_coin = &coins[0];
-    let mut closest_distance = distance(&our_pos, &closest_coin);
+    let mut closest_distance = distance(&our_pos, closest_coin);
 
     for coin in coins.iter() {
         let distance = distance(&our_pos, coin);
@@ -42,7 +46,7 @@ pub fn closest_coin(our_pos: Point, coins: &[Point]) -> Point {
         }
     }
 
-    *closest_coin
+    Some(*closest_coin)
 }
 
 fn distance(p1: &Point, p2: &Point) -> i32 {
@@ -62,6 +66,13 @@ mod tests {
             Point { x: 3, y: 2 },
         ];
         let result = closest_coin(Point { x: 0, y: 2 }, &coins);
-        assert_eq!(result, Point { x: 0, y: 4 });
+        assert_eq!(result, Some(Point { x: 0, y: 4 }));
+    }
+
+    #[test]
+    fn no_coins() {
+        let coins = vec![];
+        let result = closest_coin(Point { x: 0, y: 2 }, &coins);
+        assert_eq!(result, None);
     }
 }
