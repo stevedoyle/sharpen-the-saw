@@ -4,5 +4,5 @@ resolver = "2"
 members = [
     "rust/dcp023",
     "rust/dcp096",
-    "rust/dcp101", "rust/dcp212", "rust/dcp241", "rust/dcp248", "rust/dcp269", "rust/dcp348", "rust/dcp350", "rust/dcp373", "rust/dcp376", "rust/dcp377", "rust/dcp379",
+    "rust/dcp101", "rust/dcp212", "rust/dcp241", "rust/dcp248", "rust/dcp269", "rust/dcp348", "rust/dcp350", "rust/dcp361", "rust/dcp373", "rust/dcp376", "rust/dcp377", "rust/dcp379",
 ]
