@@ -1,3 +1,6 @@
 [submodule "leetcode/leetcode-rs"]
 	path = leetcode/leetcode-rs
 	url = https://github.com/stevedoyle/leetcode-rs
+[submodule "advent-of-code"]
+	path = advent-of-code
+	url = https://github.com/stevedoyle/advent-of-code
