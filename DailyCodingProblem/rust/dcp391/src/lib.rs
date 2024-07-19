@@ -18,8 +18,44 @@ You should return the following:
 
 use std::cmp::min;
 
-// Complexity: O(n^3)
+// Complexity: O(n^2)
 pub fn longest_sequence(user1: Vec<String>, user2: Vec<String>) -> Vec<String> {
+    let mut match_pos = 0;
+    let mut max_match_len = 0;
+
+    // Slide one vector along the other counting the number of consecutive matches at each position
+    // within the overlapping window.
+    let k = user1.len() + user2.len() - 1;
+    for i in 0..k {
+        let u1_idx = if i < user1.len() {
+            user1.len() - i - 1
+        } else {
+            0
+        };
+        let u2_idx = if i < user1.len() {
+            0
+        } else {
+            i - user1.len() + 1
+        };
+        let window_len = min(user1.len() - u1_idx, user2.len() - u2_idx);
+
+        let (longest_match_count, pos) = count_matches(
+            &user1[u1_idx..u1_idx + window_len],
+            &user2[u2_idx..u2_idx + window_len],
+        );
+        if longest_match_count > max_match_len {
+            max_match_len = longest_match_count;
+            match_pos = pos + u1_idx;
+        }
+    }
+    if max_match_len == 0 {
+        return Vec::new();
+    }
+    user1[match_pos..match_pos + max_match_len].to_vec()
+}
+
+// Complexity: O(n^3)
+pub fn longest_sequence_v1(user1: Vec<String>, user2: Vec<String>) -> Vec<String> {
     let mut match_pos = 0;
     let mut max_match_len = 0;
 
