@@ -11,6 +11,31 @@ For example, given 100, you can reach 1 in five steps with the following route:
     100 -> 10 -> 9 -> 3 -> 2 -> 1.
 */
 
+// Dynamic programming solution
+// Time complexity: O(n * sqrt(n))
+// Space complexity: O(n)
+pub fn steps_dynamic(n: u64) -> u64 {
+    let mut distance = (0..=n).map(|i| (i as i64 - 1)).collect::<Vec<i64>>();
+
+    for i in 1..=n {
+        let sqrt_n = (i as f64).sqrt() as u64;
+        for j in (1..=sqrt_n).rev() {
+            if i % j == 0 {
+                distance[i as usize] = distance[i as usize].min(distance[(i / j) as usize] + 1);
+            }
+        }
+        distance[i as usize] = distance[i as usize].min(distance[(i - 1) as usize] + 1);
+    }
+    distance[n as usize] as u64
+}
+
+// Breadth-first search solution
+// Time complexity: O(n * sqrt(n))
+// Space complexity: O(n)
+// This solution is slower than the dynamic programming solution
+// because it has to check all divisors of a number
+// and the number of divisors of a number is O(sqrt(n))
+// So the time complexity is O(n * sqrt(n))
 pub fn steps(n: u64) -> u64 {
     let mut queue = std::collections::VecDeque::new();
     queue.push_back((n, 0));
@@ -53,6 +78,11 @@ mod tests {
     #[test]
     fn test_steps() {
         assert_eq!(steps(100), 5);
+    }
+
+    #[test]
+    fn test_steps_dynamic() {
+        assert_eq!(steps_dynamic(100), 5);
     }
 
     #[test]
