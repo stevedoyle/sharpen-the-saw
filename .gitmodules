@@ -4,3 +4,6 @@
 [submodule "advent-of-code"]
 	path = advent-of-code
 	url = https://github.com/stevedoyle/advent-of-code
+[submodule "leetcode/leetcode-py"]
+	path = leetcode/leetcode-py
+	url = https://github.com/stevedoyle/leetcode-py
