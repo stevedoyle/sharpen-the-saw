@@ -21,4 +21,4 @@ class TestCountSetBitS:
         assert count_set_bits(2) == 2
 
     def test_ten(self):
-        assert count_set_bits(10) == 22
+        assert count_set_bits(10) == 17
