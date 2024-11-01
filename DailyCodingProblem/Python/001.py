@@ -20,7 +20,7 @@ Space Complexity: O(1)
 """
 
 
-def test_sum_original(lst, k):
+def check_sum_original(lst, k):
     for count, value in enumerate(lst):
         b = k - value
         if b in lst[count + 1 :]:
@@ -34,7 +34,7 @@ Space Complexity: O(N)
 """
 
 
-def test_sum(lst, k):
+def check_sum(lst, k):
     prev = set()
     for value in lst:
         b = k - value
@@ -46,13 +46,13 @@ def test_sum(lst, k):
 
 class TestProblem001(unittest.TestCase):
     def testTrueCase(self):
-        self.assertEqual(True, test_sum([10, 15, 3, 7], 17))
+        self.assertEqual(True, check_sum([10, 15, 3, 7], 17))
 
     def testSimpleFalseCase(self):
-        self.assertEqual(False, test_sum([10, 15, 3, 7], 16))
+        self.assertEqual(False, check_sum([10, 15, 3, 7], 16))
 
     def testEmptyList(self):
-        self.assertEqual(False, test_sum([], 1))
+        self.assertEqual(False, check_sum([], 1))
 
 
 if __name__ == "__main__":
