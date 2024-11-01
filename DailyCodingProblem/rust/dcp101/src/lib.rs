@@ -14,7 +14,7 @@ smaller solution.
 
 If [a, b] is one solution with a <= b, and [c, d] is another solution with
 c <= d, then
-	[a, b] < [c, d] If a < c OR a==c AND b < d.
+    [a, b] < [c, d] If a < c OR a==c AND b < d.
 */
 
 pub fn get_prime_sum(val: usize) -> (usize, usize) {
@@ -24,7 +24,7 @@ pub fn get_prime_sum(val: usize) -> (usize, usize) {
 
     let ps: Vec<usize> = primal::Primes::all().take_while(|p| p < &val).collect();
     for (i, a) in ps.iter().enumerate() {
-        for (_, b) in ps[i..ps.len()].iter().enumerate() {
+        for b in ps[i..ps.len()].iter() {
             if a + b == val {
                 return (*a, *b);
             }
@@ -40,12 +40,12 @@ mod tests {
 
     #[test]
     fn test_get_prime_sum() {
-        assert_eq!(get_prime_sum(2), (1,1));
-        assert_eq!(get_prime_sum(4), (2,2));
-        assert_eq!(get_prime_sum(6), (3,3));
-        assert_eq!(get_prime_sum(8), (3,5));
-        assert_eq!(get_prime_sum(10), (3,7));
-        assert_eq!(get_prime_sum(12), (5,7));
-        assert_eq!(get_prime_sum(100), (3,97));
+        assert_eq!(get_prime_sum(2), (1, 1));
+        assert_eq!(get_prime_sum(4), (2, 2));
+        assert_eq!(get_prime_sum(6), (3, 3));
+        assert_eq!(get_prime_sum(8), (3, 5));
+        assert_eq!(get_prime_sum(10), (3, 7));
+        assert_eq!(get_prime_sum(12), (5, 7));
+        assert_eq!(get_prime_sum(100), (3, 97));
     }
 }

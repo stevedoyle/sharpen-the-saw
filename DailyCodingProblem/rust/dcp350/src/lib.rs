@@ -35,13 +35,13 @@ pub fn min_squares(n: u64) -> u64 {
     // form N = 4a* (8 * b + 7), where a and b are integers.
     let mut x = n;
     while x % 4 == 0 {
-        x = x / 4;
+        x /= 4;
     }
     if x % 8 != 4 {
         return 3;
     }
 
-    return 4;
+    4
 }
 
 #[cfg(test)]

@@ -24,7 +24,7 @@ pub fn subsequences(s: &str) -> Vec<String> {
 
 fn subsequences_helper(chars: &mut Vec<char>, current: &mut String, result: &mut Vec<String>) {
     if chars.is_empty() {
-        if current.len() > 0 {
+        if !current.is_empty() {
             result.push(current.clone());
         }
         return;

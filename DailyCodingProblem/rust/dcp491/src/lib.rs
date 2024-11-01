@@ -10,7 +10,7 @@ pub fn is_palindrome(num: u64) -> bool {
     while temp != 0 {
         let digit = temp % 10;
         rev = rev * 10 + digit;
-        temp = temp / 10;
+        temp /= 10;
     }
     num == rev
 }

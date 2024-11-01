@@ -23,7 +23,7 @@
     Implement insertion and search functions for a ternary search tree.
 */
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct TernaryTree {
     ch: Option<char>,
     left: Option<Box<TernaryTree>>,

@@ -13,7 +13,7 @@ Given the string ..R...L.L, you should return ..RR.LLLL.
  */
 
 pub fn dominoes(start: &str) -> String {
-    let mut tmp = str::replace(&start, "R.L", "X");
+    let mut tmp = str::replace(start, "R.L", "X");
 
     let modified = loop {
         let tmp1 = str::replace(&tmp, ".L", "LL");

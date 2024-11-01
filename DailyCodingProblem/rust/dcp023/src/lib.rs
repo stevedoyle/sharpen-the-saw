@@ -19,7 +19,6 @@
 /// minimum number of steps required to reach the end is 7, since we would
 /// need to go through (1, 2) because there is a wall everywhere else on the
 /// second row.
-
 use std::collections::{HashMap, VecDeque};
 
 #[derive(Copy, Clone, Eq, Hash, PartialEq)]
@@ -33,7 +32,7 @@ struct Step {
     count: i32,
 }
 
-pub fn count_steps(board: &Vec<Vec<bool>>, start: &Coordinate, end: &Coordinate) -> i32 {
+pub fn count_steps(board: &[Vec<bool>], start: &Coordinate, end: &Coordinate) -> i32 {
     // Traverse the board, starting at the start co-ordinate, using a deque to
     // track available moves to be considered. Each deque entry is the
     // co-ordinate and a count of steps that it took to get to that co-ordinate.
@@ -42,7 +41,10 @@ pub fn count_steps(board: &Vec<Vec<bool>>, start: &Coordinate, end: &Coordinate)
     // the solution with the smallest move count.
     let mut visited: HashMap<Coordinate, bool> = HashMap::new();
     let mut queue: VecDeque<Step> = VecDeque::new();
-    queue.push_back(Step { coord: *start, count: 0});
+    queue.push_back(Step {
+        coord: *start,
+        count: 0,
+    });
     let mut solutions: Vec<i32> = Vec::new();
 
     while !queue.is_empty() {
@@ -55,7 +57,10 @@ pub fn count_steps(board: &Vec<Vec<bool>>, start: &Coordinate, end: &Coordinate)
         let neighbours = get_valid_neighbours(board, &step.coord);
         for neigh in neighbours {
             if !visited.contains_key(&neigh) {
-                queue.push_back(Step {coord: neigh, count: step.count + 1});
+                queue.push_back(Step {
+                    coord: neigh,
+                    count: step.count + 1,
+                });
             }
         }
     }
@@ -63,17 +68,29 @@ pub fn count_steps(board: &Vec<Vec<bool>>, start: &Coordinate, end: &Coordinate)
     let min_val = solutions.iter().min();
     match min_val {
         Some(count) => *count,
-        None        => -1,
+        None => -1,
     }
 }
 
-fn get_valid_neighbours(board: &Vec<Vec<bool>>, coord: &Coordinate) -> Vec<Coordinate> {
+fn get_valid_neighbours(board: &[Vec<bool>], coord: &Coordinate) -> Vec<Coordinate> {
     let mut neighbours: Vec<Coordinate> = Vec::new();
     let candidates: Vec<Coordinate> = vec![
-        Coordinate { row: coord.row, col: coord.col - 1},
-        Coordinate { row: coord.row - 1, col: coord.col},
-        Coordinate { row: coord.row + 1, col: coord.col},
-        Coordinate { row: coord.row, col: coord.col + 1},
+        Coordinate {
+            row: coord.row,
+            col: coord.col - 1,
+        },
+        Coordinate {
+            row: coord.row - 1,
+            col: coord.col,
+        },
+        Coordinate {
+            row: coord.row + 1,
+            col: coord.col,
+        },
+        Coordinate {
+            row: coord.row,
+            col: coord.col + 1,
+        },
     ];
     for candidate in candidates {
         if valid_board_corodinate(board, &candidate) {
@@ -83,7 +100,7 @@ fn get_valid_neighbours(board: &Vec<Vec<bool>>, coord: &Coordinate) -> Vec<Coord
     neighbours
 }
 
-fn valid_board_corodinate(board: &Vec<Vec<bool>>, coord: &Coordinate) -> bool {
+fn valid_board_corodinate(board: &[Vec<bool>], coord: &Coordinate) -> bool {
     if coord.row < 0 || coord.row as usize >= board.len() {
         return false;
     }
@@ -92,7 +109,6 @@ fn valid_board_corodinate(board: &Vec<Vec<bool>>, coord: &Coordinate) -> bool {
     }
     !board[coord.row as usize][coord.col as usize]
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -106,8 +122,8 @@ mod tests {
             vec![false, false, false, false],
             vec![false, false, false, false],
         ];
-        let start = Coordinate {row: 3, col: 0};
-        let end = Coordinate {row: 0, col: 0};
+        let start = Coordinate { row: 3, col: 0 };
+        let end = Coordinate { row: 0, col: 0 };
         let want = 7;
         assert_eq!(count_steps(&board, &start, &end), want);
     }

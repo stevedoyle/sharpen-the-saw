@@ -29,11 +29,9 @@ pub fn rotate(matrix: &Matrix) -> Matrix {
         }
     }
 
-    for i in 0..n_rows {
+    for row in matrix.iter_mut() {
         for j in 0..n_cols / 2 {
-            let temp = matrix[i][j];
-            matrix[i][j] = matrix[i][n_cols - 1 - j];
-            matrix[i][n_cols - 1 - j] = temp;
+            row.swap(j, n_cols - 1 - j);
         }
     }
     matrix
