@@ -2,6 +2,19 @@ import pandas as pd
 
 
 def article_views(views: pd.DataFrame) -> pd.DataFrame:
+    """
+    Filters and processes a DataFrame of article views to identify unique authors
+    who have viewed their own articles.
+
+    Args:
+        views (pd.DataFrame): A DataFrame containing article view data with the following columns:
+            - "author_id": The ID of the author of the article.
+            - "viewer_id": The ID of the user who viewed the article.
+
+    Returns:
+        pd.DataFrame: A DataFrame with a single column "id" containing the unique IDs
+        of authors who have viewed their own articles, sorted in ascending order.
+    """
     df = views[views["author_id"] == views["viewer_id"]]
     df = df.drop_duplicates(subset=["author_id"])
     df = df[["author_id"]].rename(columns={"author_id": "id"})

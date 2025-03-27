@@ -2,6 +2,20 @@ import pandas as pd
 
 
 def find_customers(customers: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFrame:
+    """
+    Finds customers who have not placed any orders.
+
+    Args:
+        customers (pd.DataFrame): A DataFrame containing customer information with the following columns:
+            - "id" (int): The unique identifier for each customer.
+            - "name" (str): The name of the customer.
+        orders (pd.DataFrame): A DataFrame containing order information with the following column:
+            - "customerId" (int): The unique identifier of the customer who placed the order.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing a single column "Customers" with the names of customers
+        who have not placed any orders.
+    """
     df = customers[~customers["id"].isin(orders["customerId"])]
     df = df[["name"]].rename(columns={"name": "Customers"})
     return df
