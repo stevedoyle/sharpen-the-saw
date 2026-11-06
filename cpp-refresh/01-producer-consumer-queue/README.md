@@ -5,7 +5,7 @@ Phase 1 capstone (C++11 foundations). Build `pcq::BlockingQueue<T>`, a bounded m
 ## Layout
 
 ```text
-include/pcq/blocking_queue.hpp   the queue (header-only template), the part to implement
+include/blocking_queue.hpp       the queue (header-only template), the part to implement
 src/main.cpp                     pcq-demo: stdin -> queue -> N consumers -> stdout
 tests/blocking_queue_test.cpp    GoogleTest specs, DISABLED_ until implemented
 ```

@@ -5,7 +5,7 @@
 //
 // Diagnostics go to stderr so stdout stays pipeable.
 
-#include <pcq/blocking_queue.hpp>
+#include <blocking_queue.hpp>
 
 #include <cstdlib>
 #include <iostream>
