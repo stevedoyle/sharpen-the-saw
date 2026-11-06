@@ -24,16 +24,9 @@
       "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
     },
     {
-      "name": "sanitizer-base",
-      "hidden": true,
-      "inherits": "base",
-      "description": "Homebrew LLVM's sanitizer runtimes crash/hang on this macOS; Apple clang's work.",
-      "cacheVariables": { "CMAKE_CXX_COMPILER": "/usr/bin/clang++" }
-    },
-    {
       "name": "tsan",
       "displayName": "Debug + ThreadSanitizer",
-      "inherits": "sanitizer-base",
+      "inherits": "base",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "PCQ_SANITIZER": "thread"
@@ -42,7 +35,7 @@
     {
       "name": "asan",
       "displayName": "Debug + AddressSanitizer",
-      "inherits": "sanitizer-base",
+      "inherits": "base",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "PCQ_SANITIZER": "address"

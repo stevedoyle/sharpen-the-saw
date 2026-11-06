@@ -24,8 +24,6 @@ tests/blocking_queue_test.cpp    GoogleTest specs, DISABLED_ until implemented
 | `tsan` | ThreadSanitizer, use it for every concurrency test |
 | `asan` | AddressSanitizer and leak checks |
 
-The `tsan` and `asan` presets build with Apple clang (`/usr/bin/clang++`). Homebrew LLVM 20's sanitizer runtimes don't work on this macOS: TSan segfaults and ASan hangs, even on an empty program.
-
 ```bash
 cmake --preset tsan && cmake --build --preset tsan && ctest --preset tsan
 ```
