@@ -2,10 +2,12 @@ cmake_minimum_required(VERSION 3.25)
 
 project(cpp11_features
   VERSION 0.1.0
-  DESCRIPTION "C++11 language feature demos: auto, nullptr, range-for"
+  DESCRIPTION "C++11 feature demos: auto, nullptr, range-for, my_async"
   LANGUAGES CXX)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+find_package(Threads REQUIRED)
 
 function(add_demo target src)
     add_executable(${target} ${src})
@@ -20,3 +22,5 @@ endfunction()
 add_demo(auto-demo    auto_demo.cpp)
 add_demo(nullptr-demo nullptr_demo.cpp)
 add_demo(range-demo   range_for_demo.cpp)
+add_demo(my-async-demo my_async_demo.cpp)
+target_link_libraries(my-async-demo PRIVATE Threads::Threads)
