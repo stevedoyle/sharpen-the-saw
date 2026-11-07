@@ -5,9 +5,9 @@ Phase 1 capstone (C++11 foundations). Build `pcq::BlockingQueue<T>`, a bounded m
 ## Layout
 
 ```text
-include/blocking_queue.hpp       the queue (header-only template), the part to implement
-src/main.cpp                     pcq-demo: stdin -> queue -> N consumers -> stdout
-tests/blocking_queue_test.cpp    GoogleTest specs, DISABLED_ until implemented
+include/blocking_queue.hpp       the queue (header-only template)
+src/main.cpp                     pcq-demo: stdin -> queue -> N consumers -> stdout (not yet implemented)
+tests/blocking_queue_test.cpp    GoogleTest specs
 ```
 
 ## Standards
@@ -38,10 +38,10 @@ seq 1 1000 | ./build/debug/pcq-demo 4 | sort -n | tail
 
 ## Checklist
 
-- [ ] `push` / `pop` move items through the queue and work with `std::unique_ptr`
-- [ ] `push` blocks when the queue is full (bounded capacity)
-- [ ] `try_push` / `try_pop` never block
-- [ ] `close()` wakes every waiter. Consumers drain the remaining items, then `pop` returns false
-- [ ] Concurrency tests pass with many producers and many consumers, clean under `tsan`
+- [x] `push` / `pop` move items through the queue and work with `std::unique_ptr`
+- [x] `push` blocks when the queue is full (bounded capacity)
+- [x] `try_push` / `try_pop` never block
+- [x] `close()` wakes every waiter. Consumers drain the remaining items, then `pop` returns false
+- [x] Concurrency tests pass with many producers and many consumers, clean under `tsan`
 - [ ] `pcq-demo` pipeline works
 - [ ] Stretch: `pop_for(timeout)` using `std::chrono`
