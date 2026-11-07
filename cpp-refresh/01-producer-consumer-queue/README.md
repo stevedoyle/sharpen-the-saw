@@ -8,6 +8,7 @@ Phase 1 capstone (C++11 foundations). Build `pcq::BlockingQueue<T>`, a bounded m
 include/blocking_queue.hpp       the queue (header-only template)
 src/main.cpp                     pcq-demo: stdin -> queue -> N consumers -> stdout
 tests/blocking_queue_test.cpp    GoogleTest specs
+tests/demo_pipeline_test.sh      end-to-end checks for pcq-demo (run by ctest)
 ```
 
 ## Standards

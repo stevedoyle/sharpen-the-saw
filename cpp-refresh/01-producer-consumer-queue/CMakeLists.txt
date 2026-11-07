@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.25)
 
 project(producer_consumer_queue
   VERSION 0.1.0
-  DESCRIPTION "Phase 1 capstone: thread-safe producer-consumer queue (C++11)"
+  DESCRIPTION "Phase 1 capstone: thread-safe producer-consumer queue"
   LANGUAGES CXX)
 
 # The library and demo build as C++23 by default. C++20 is the minimum:
@@ -53,15 +53,4 @@ set_target_properties(pcq-demo PROPERTIES
 if(PCQ_BUILD_TESTS)
   enable_testing()
   add_subdirectory(tests)
-
-  # End-to-end pipeline checks for pcq-demo, driven through the shell.
-  set(PCQ_DEMO "$<TARGET_FILE:pcq-demo>")
-  add_test(NAME pcq-demo.every-line-once
-    COMMAND sh -c "test \"$(seq 1 5000 | '${PCQ_DEMO}' 8 | sort -n | cut -f2- | cksum)\" = \"$(seq 1 5000 | cksum)\"")
-  add_test(NAME pcq-demo.seq-matches-line
-    COMMAND sh -c "seq 1 1000 | '${PCQ_DEMO}' 4 | awk -F'\\t' '$1 != $2 { exit 1 }'")
-  add_test(NAME pcq-demo.empty-input
-    COMMAND sh -c "test -z \"$('${PCQ_DEMO}' 3 < /dev/null)\"")
-  add_test(NAME pcq-demo.rejects-bad-consumer-count
-    COMMAND sh -c "for a in 0 -1 4x '' 99999; do '${PCQ_DEMO}' \"$a\" < /dev/null 2>/dev/null && exit 1; done; exit 0")
 endif()

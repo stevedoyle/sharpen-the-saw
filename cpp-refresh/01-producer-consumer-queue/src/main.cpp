@@ -13,6 +13,7 @@
 
 #include <cerrno>
 #include <cstdlib>
+#include <exception>
 #include <iostream>
 #include <memory>
 #include <mutex>
@@ -58,19 +59,38 @@ void consume(pcq::BlockingQueue<JobPtr>& queue, std::ostream& out,
     }
 }
 
-}  // namespace
+// On scope exit, closes the queue and joins every started worker. This runs
+// on the normal path and when an exception unwinds, so no joinable
+// std::thread is ever destroyed (which would call std::terminate). Closing
+// first matters: consumers blocked in pop() only return once it is closed.
+class WorkerGuard {
+public:
+    WorkerGuard(pcq::BlockingQueue<JobPtr>& queue,
+                std::vector<std::thread>& workers)
+        : queue_(queue), workers_(workers) {}
+    WorkerGuard(const WorkerGuard&) = delete;
+    WorkerGuard& operator=(const WorkerGuard&) = delete;
 
-int main(int argc, char* argv[]) {
-    unsigned consumers = 2;
-    if (argc > 2 || (argc == 2 && !parse_consumers(argv[1], consumers))) {
-        std::cerr << "usage: pcq-demo [consumers, 1-1024]\n";
-        return EXIT_FAILURE;
+    ~WorkerGuard() {
+        queue_.close();
+        for (auto& t : workers_) {
+            if (t.joinable()) t.join();
+        }
     }
 
+private:
+    pcq::BlockingQueue<JobPtr>& queue_;
+    std::vector<std::thread>& workers_;
+};
+
+// Runs the pipeline: `consumers` threads pop and print while this thread
+// reads stdin and pushes. Returns once every job has been written.
+void run(unsigned consumers) {
     pcq::BlockingQueue<JobPtr> queue(kQueueCapacity);
     std::mutex out_mutex;
-
     std::vector<std::thread> workers;
+    WorkerGuard guard(queue, workers);  // declared last, destroyed first
+
     workers.reserve(consumers);
     for (unsigned i = 0; i < consumers; ++i) {
         workers.emplace_back(consume, std::ref(queue), std::ref(std::cout),
@@ -84,9 +104,26 @@ int main(int argc, char* argv[]) {
     while (std::getline(std::cin, line)) {
         if (!queue.push(std::make_unique<Job>(++seq, std::move(line)))) break;
     }
+}  // guard: close() and join all consumers
 
-    queue.close();
-    for (auto& t : workers) t.join();
+}  // namespace
+
+int main(int argc, char* argv[]) {
+    unsigned consumers = 2;
+    if (argc > 2 || (argc == 2 && !parse_consumers(argv[1], consumers))) {
+        std::cerr << "usage: pcq-demo [consumers, 1-1024]\n";
+        return EXIT_FAILURE;
+    }
+
+    // Catching here guarantees stack unwinding, so WorkerGuard runs even
+    // when an exception (e.g. std::system_error from std::thread, or
+    // std::bad_alloc) escapes run().
+    try {
+        run(consumers);
+    } catch (const std::exception& e) {
+        std::cerr << "pcq-demo: " << e.what() << '\n';
+        return EXIT_FAILURE;
+    }
 
     std::cout.flush();
     if (!std::cout) {

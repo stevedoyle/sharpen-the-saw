@@ -27,6 +27,11 @@ TEST(BlockingQueue, InstantiatesWithMoveOnlyType) {
 
 // Behaviour tests. Run the concurrency tests under the tsan preset.
 
+// Long enough for a thread that is going to block to reach its wait.
+// Used only to assert that something has NOT happened yet, so a slow
+// machine can make these tests weaker but never makes them fail spuriously.
+const std::chrono::milliseconds kSettle(50);
+
 TEST(BlockingQueue, PushThenPopTransfersOwnership) {
     pcq::BlockingQueue<IntPtr> q;
     ASSERT_TRUE(q.push(IntPtr(new int(42))));
@@ -114,12 +119,19 @@ TEST(BlockingQueue, PushFailsAfterClose) {
 
 TEST(BlockingQueue, CloseWakesBlockedConsumer) {
     pcq::BlockingQueue<IntPtr> q;
+    std::atomic<bool> returned{false};
     bool pop_result = true;
 
     std::thread consumer([&] {
         IntPtr out;
         pop_result = q.pop(out);
+        returned = true;
     });
+
+    // Give the consumer time to block in pop() so close() has to wake it,
+    // rather than pop() seeing an already-closed queue.
+    std::this_thread::sleep_for(kSettle);
+    EXPECT_FALSE(returned.load()) << "pop must block while the queue is empty";
 
     q.close();
     consumer.join();
@@ -151,11 +163,6 @@ TEST(BlockingQueue, ConsumersDrainRemainingItemsAfterClose) {
 
     EXPECT_EQ(drained.load(), N);
 }
-
-// Long enough for a thread that is going to block to reach its wait.
-// Used only to assert that something has NOT happened yet, so a slow
-// machine can make these tests weaker but never makes them fail spuriously.
-const std::chrono::milliseconds kSettle(50);
 
 TEST(BlockingQueue, PushBlocksWhenFullUntilConsumerPops) {
     pcq::BlockingQueue<IntPtr> q(1);

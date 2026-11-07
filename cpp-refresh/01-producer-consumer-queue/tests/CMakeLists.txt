@@ -18,3 +18,10 @@ set_target_properties(pcq-tests PROPERTIES
 
 include(GoogleTest)
 gtest_discover_tests(pcq-tests)
+
+# End-to-end checks for pcq-demo; see demo_pipeline_test.sh for each case.
+foreach(case every-line-once seq-matches-line empty-input rejects-bad-usage)
+  add_test(NAME pcq-demo.${case}
+    COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/demo_pipeline_test.sh
+            $<TARGET_FILE:pcq-demo> ${case})
+endforeach()
