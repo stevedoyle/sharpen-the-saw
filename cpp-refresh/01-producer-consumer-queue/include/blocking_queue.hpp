@@ -33,10 +33,10 @@ public:
 
     // Blocks while the queue is full. Returns false if the queue is closed
     // (the item is not enqueued).
-    bool push(T item);
+    bool push(T&& item);
 
     // Non-blocking variant. Returns false if full or closed.
-    bool try_push(T item);
+    bool try_push(T&& item);
 
     // Blocks until an item is available or the queue is closed and empty.
     // On success moves the item into `out` and returns true.
@@ -60,44 +60,73 @@ private:
     bool closed_ = false;
 };
 
-// TODO(capstone): implement the member functions below.
-
 template <typename T>
-bool BlockingQueue<T>::push(T item) {
-    (void)item;
-    return false;
+bool BlockingQueue<T>::push(T&& item) {
+    {
+        std::unique_lock<std::mutex> lock(mutex_);
+        not_full_.wait(lock, [&]{ return closed_ || capacity_ == 0 || items_.size() < capacity_; });
+        if (closed_) return false;
+        items_.push_back(std::move(item));
+    }
+    not_empty_.notify_one();
+    return true;
 }
 
 template <typename T>
-bool BlockingQueue<T>::try_push(T item) {
-    (void)item;
-    return false;
+bool BlockingQueue<T>::try_push(T&& item) {
+    {
+        std::lock_guard<std::mutex> lock(mutex_);
+        if (closed_) return false;
+        if (capacity_ != 0 && items_.size() >= capacity_) return false;
+        items_.push_back(std::move(item));
+    }
+    not_empty_.notify_one();
+    return true;
 }
 
 template <typename T>
 bool BlockingQueue<T>::pop(T& out) {
-    (void)out;
-    return false;
+    {
+        std::unique_lock<std::mutex> lock(mutex_);
+        not_empty_.wait(lock, [&]{ return closed_ || !items_.empty(); });
+        if (items_.empty()) return false;
+        out = std::move(items_.front());
+        items_.pop_front();
+    }
+    not_full_.notify_one();
+    return true;
 }
 
 template <typename T>
 bool BlockingQueue<T>::try_pop(T& out) {
-    (void)out;
+    {
+        std::lock_guard<std::mutex> lock(mutex_);
+        if (closed_) return false;
+        if (items_.empty()) return false;
+        out = std::move(items_.front());
+        items_.pop_front();
+    }
+    not_full_.notify_one();
     return false;
 }
 
 template <typename T>
-void BlockingQueue<T>::close() {}
+void BlockingQueue<T>::close() {
+    {
+        std::lock_guard<std::mutex> lock(mutex_);
+        closed_ = true;
+    }
+    not_empty_.notify_all();
+    not_full_.notify_all();
+}
 
 template <typename T>
 bool BlockingQueue<T>::closed() const {
-    std::lock_guard<std::mutex> lock(mutex_);
     return closed_;
 }
 
 template <typename T>
 std::size_t BlockingQueue<T>::size() const {
-    std::lock_guard<std::mutex> lock(mutex_);
     return items_.size();
 }
 
