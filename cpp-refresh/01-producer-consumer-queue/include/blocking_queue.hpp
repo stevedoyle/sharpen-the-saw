@@ -5,13 +5,11 @@
 //
 // Design goals (Phase 1 capstone):
 //   - Works with move-only element types (e.g. std::unique_ptr<T>).
-//   - No element is ever copied: push takes by value/rvalue and moves in,
-//     pop moves out.
+//   - No element is ever copied: push takes an rvalue and moves it in,
+//     pop moves it out.
 //   - close() lets producers signal "no more items"; blocked consumers wake
 //     and drain what's left, then see the queue as finished.
 //   - C++11 only: std::mutex, std::condition_variable, std::unique_lock.
-//
-// This file is a scaffold: the interface is sketched, the bodies are yours.
 
 #include <condition_variable>
 #include <cstddef>
@@ -42,7 +40,8 @@ public:
     // On success moves the item into `out` and returns true.
     bool pop(T& out);
 
-    // Non-blocking variant. Returns false if empty.
+    // Non-blocking variant. Returns false if empty; after close() it still
+    // drains remaining items.
     bool try_pop(T& out);
 
     // After close(): pushes fail, pops drain remaining items then fail.
@@ -101,13 +100,13 @@ template <typename T>
 bool BlockingQueue<T>::try_pop(T& out) {
     {
         std::lock_guard<std::mutex> lock(mutex_);
-        if (closed_) return false;
+        // Like pop(), a closed queue still yields its remaining items.
         if (items_.empty()) return false;
         out = std::move(items_.front());
         items_.pop_front();
     }
     not_full_.notify_one();
-    return false;
+    return true;
 }
 
 template <typename T>
@@ -122,11 +121,13 @@ void BlockingQueue<T>::close() {
 
 template <typename T>
 bool BlockingQueue<T>::closed() const {
+    std::lock_guard<std::mutex> lock(mutex_);
     return closed_;
 }
 
 template <typename T>
 std::size_t BlockingQueue<T>::size() const {
+    std::lock_guard<std::mutex> lock(mutex_);
     return items_.size();
 }
 

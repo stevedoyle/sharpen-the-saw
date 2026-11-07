@@ -2,13 +2,18 @@ cmake_minimum_required(VERSION 3.25)
 
 project(producer_consumer_queue
   VERSION 0.1.0
-  DESCRIPTION "Phase 1 capstone: thread-safe producer-consumer queue (C++11)"
+  DESCRIPTION "Phase 1 capstone: thread-safe producer-consumer queue"
   LANGUAGES CXX)
 
-# Phase 1 is about C++11. The library and demo are pinned to C++11 so that
-# reaching for a later feature (std::make_unique, generic lambdas, ...) is a
-# compile error, not a silent upgrade. Tests may use a newer standard.
-set(PCQ_CXX_STANDARD 11 CACHE STRING "C++ standard for the library and demo")
+# The library and demo build as C++23 by default. C++20 is the minimum:
+# pcq-demo uses std::make_unique with parenthesised aggregate init.
+# Tests use the same standard.
+set(PCQ_CXX_STANDARD 23 CACHE STRING "C++ standard for the library and demo")
+set_property(CACHE PCQ_CXX_STANDARD PROPERTY STRINGS 20 23)
+if(NOT PCQ_CXX_STANDARD MATCHES "^(20|23)$")
+  message(FATAL_ERROR
+    "PCQ_CXX_STANDARD must be 20 or 23 (got '${PCQ_CXX_STANDARD}')")
+endif()
 
 option(PCQ_BUILD_TESTS "Build unit tests (fetches GoogleTest)" ON)
 option(PCQ_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
